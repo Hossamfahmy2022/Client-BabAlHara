@@ -1,0 +1,82 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a routerLink="/" class="brand-link">
+      @if (store.restaurant(); as rest) {
+        <img [src]="api.resolveImageUrl(rest.logoUrl)" [alt]="rest.nameAr" class="brand-logo" />
+        <div class="brand-text">
+          <strong>{{ rest.nameAr }}</strong>
+          <small [class.is-open]="rest.isOpenNow" [class.is-closed]="!rest.isOpenNow">
+            {{ rest.isOpenNow ? 'مفتوح الآن' : 'مغلق الآن' }}
+          </small>
+        </div>
+      } @else {
+        <div class="brand-text">
+          <strong>باب الحارة</strong>
+          <small>سنورس — الفيوم</small>
+        </div>
+      }
+    </a>
+
+    <nav class="desktop-nav" aria-label="التنقل الرئيسي">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">الرئيسية</a>
+      <a routerLink="/menu" routerLinkActive="active">المنيو</a>
+      <a routerLink="/track" routerLinkActive="active">تتبع طلبك</a>
+      <a routerLink="/about" routerLinkActive="active">عن المطعم</a>
+    </nav>
+
+    <button type="button" class="btn btn-gold cart-trigger" (click)="cart.openDrawer()">
+      <span>السلة</span>
+      @if (cart.itemCount() > 0) {
+        <span class="cart-count">{{ cart.itemCount() }}</span>
+      }
+    </button>
+  </div>
+</header>
+
+<main class="main-shell">
+  <router-outlet />
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    @if (store.restaurant(); as rest) {
+      <div>
+        <h4>{{ rest.nameAr }} ({{ rest.nameEn }})</h4>
+        <p>{{ rest.addressAr }}</p>
+      </div>
+      <div>
+        <h4>للطلبات والاستفسار</h4>
+        <div class="footer-phones">
+          @for (p of rest.phones; track p) {
+            <a [href]="'tel:' + p">{{ p }}</a>
+          }
+          <a [href]="rest.facebookUrl" target="_blank" rel="noopener">فيسبوك</a>
+        </div>
+      </div>
+    } @else {
+      <div>
+        <h4>باب الحارة — سنورس</h4>
+        <p>أصل الأكلة السورية في سنورس</p>
+      </div>
+    }
+  </div>
+</footer>
+
+<nav class="mobile-bottom-nav" aria-label="التنقل السريع">
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">الرئيسية</a>
+  <a routerLink="/menu" routerLinkActive="active">المنيو</a>
+  <a routerLink="/track" routerLinkActive="active">تتبع</a>
+  <a routerLink="/about" routerLinkActive="active">تواصل</a>
+</nav>
+
+<app-cart-drawer />
+
+@if (toast.toasts().length > 0) {
+  <div class="toast-stack" aria-live="polite">
+    @for (t of toast.toasts(); track t.id) {
+      <div class="toast-item" [class]="'toast-' + t.type" (click)="toast.dismiss(t.id)">
+        {{ t.text }}
+      </div>
+    }
+  </div>
+}
