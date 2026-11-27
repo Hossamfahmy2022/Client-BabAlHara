@@ -22,3 +22,15 @@ npm.cmd start
 ```powershell
 npm.cmd run build
 ```
+
+## Auto-Deploy to Vercel from GitHub
+1. Push this repository (`client-app`) to GitHub:
+   ```powershell
+   git add .
+   git commit -m "chore: configure Vercel deployment"
+   git push origin main
+   ```
+2. Go to [vercel.com/new](https://vercel.com/new) and **Import** your `Client-BabAlHara` GitHub repository.
+3. Click **Deploy** (no manual settings required — `vercel.json` automatically configures `npm install`, `npm run build:vercel`, `dist/client-app/browser`, SPA routing, and same-origin `/api/*` + `/images/*` Edge Rewrites to `https://new-bab-al-hara.runasp.net` with zero CORS issues).
+4. Every future `git push` to `main` automatically deploys to Production on Vercel, and pull requests create Preview URLs.
+5. *(Optional)* To point to a different backend URL without editing code, add `API_BASE_URL` in **Vercel Project → Settings → Environment Variables** (and update `vercel.json` rewrite destinations if using same-origin proxy).

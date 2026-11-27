@@ -4,9 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prebuild": "node scripts/set-env.mjs",
     "build": "ng build",
+    "build:vercel": "node scripts/set-env.mjs && ng build --configuration vercel",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
+  },
+  "engines": {
+    "node": ">=22.22.3"
   },
   "private": true,
   "packageManager": "npm@10.9.8",

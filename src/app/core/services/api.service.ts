@@ -14,7 +14,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = environment.apiBaseUrl;
+  private readonly baseUrl = environment.apiBaseUrl.replace(/\/+$/, '');
 
   getRestaurant(): Observable<RestaurantInfo> {
     return this.http.get<RestaurantInfo>(`${this.baseUrl}/api/restaurant`);
